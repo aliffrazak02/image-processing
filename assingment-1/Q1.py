@@ -9,7 +9,6 @@ def scanLine4e(f, l, loc):
         return f[:, l]
     else:
         raise ValueError("loc must be 'row' or 'col'")
-    return 0
 
 if __name__ == "__main__":
     # Read the image
