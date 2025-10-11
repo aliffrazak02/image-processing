@@ -2,42 +2,51 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-def imArtihmetic4e(f1, f2, op):
+def imArithmetic4e(f1, f2, op):
+
+    # Convert to float for arithmetic precision
+    f1 = f1.astype(np.float32)
+    f2 = f2.astype(np.float32)
+
     if op == 'add':
-        return cv2.add(f1, f2)
+        g = cv2.add(f1, f2)
     elif op == 'sub':
-        return cv2.subtract(f1, f2)
+        g = cv2.subtract(f1, f2)
     elif op == 'mul':
-        return cv2.multiply(f1, f2)
+        g = cv2.multiply(f1, f2)
     elif op == 'div':
-        return cv2.divide(f1, f2)
+        g = cv2.divide(f1, f2)
     else:
-        raise ValueError("op must be 'add', 'sub', 'mul', or 'div'")    
+        raise ValueError("op must be 'add', 'sub', 'mul', or 'div'")
 
-def Mask4e(M: int, N: int, rUL: int, cUL: int, rLR: int, cLR: int):
-    # Initialize mask with 0s
+    return g
+
+
+def Mask4e(M, N, rUL, cUL, rLR, cLR):
     mask = np.zeros((M, N), dtype=np.uint8)
-
-    # Check if rectangle is within bounds
-    if (rUL < 0 or cUL < 0 or rLR >= M or cLR >= N):
-        raise ValueError("Rectangle exceeds mask dimensions")
-
-    # Fill rectangle region with 1s
-    mask[rUL:rLR+1, cUL:cLR+1] = 1
-
+    mask[rUL:rLR, cUL:cLR] = 255
     return mask
 
+
 if __name__ == "__main__":
-    # Read the image
+    # Read grayscale image
     img = cv2.imread('BaboonGray.png', cv2.IMREAD_GRAYSCALE)
+    if img is None:
+        raise FileNotFoundError("BaboonGray.png not found")
 
-    # Process the image to create a mask
+    M, N = img.shape
 
+    # Create rectangular ROI mask
+    rUL, cUL, rLR, cLR = 50, 50, 450, 450  # Example coordinates
+    mask = Mask4e(M, N, rUL, cUL, rLR, cLR)
+
+    # Apply mask using multiplication
+    result = imArithmetic4e(img, mask, 'mul')
     
-    
-    # Display the grayscale image
+    # Display results
     plt.figure()
-    plt.imshow(plt.gray, cmap='gray')
-    plt.title('Grayscale Image')
-    plt.axis('off')
+    plt.imshow(result, cmap='gray')
+    plt.title('Baboon with ROI Mask Applied')
+    plt.axis("off")
+
     plt.show()
