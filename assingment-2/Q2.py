@@ -13,19 +13,15 @@ def brightnessCorr(f,percent,op):
     # Clip values to stay in [0, 255]
     result = np.clip(result, 0, 255).astype(np.uint8)
     return result
-
-def insert(f1,f2,x,y):
-    return 0
     
 if __name__ == "__main__":
     # Read the image
     img1 = cv2.imread('cameraman.png', cv2.IMREAD_GRAYSCALE)
-    img2 = cv2.imread('small_ubc_logo.jpg', cv2.IMREAD_GRAYSCALE)
 
     # Brighten the image by 30%
     brightened_img = brightnessCorr(img1, 0.3, 'brighten')
 
-    # Display the original, brightened, and darkened images
+    # Display the original and brightened images
 
     plt.figure(figsize=(10,5))
     plt.subplot(1,2,1)
@@ -38,13 +34,4 @@ if __name__ == "__main__":
     plt.title('Brightened Image')
     plt.axis('off')
     plt.show()
-    
-    # Insert img2 into img1 at position (10, 10)
-    inserted_img = insert(img1, img2, 10, 10)
-    plt.figure()
-    plt.imshow(inserted_img, cmap='gray')
-    plt.title('Image with Inserted Logo')
-    plt.axis('off')
-    plt.show()
-    
     
