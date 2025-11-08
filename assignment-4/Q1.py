@@ -70,3 +70,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+    # run: python assignment-4/Q1.py --image assignment-4/Baboon.png
